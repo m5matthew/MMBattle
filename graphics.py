@@ -107,14 +107,14 @@ class Icon:
             self.icon = pygame.transform.flip(self.icon, True, False)
 
         # Keep moving left until you reach left side
-        left = [-5, 0]
+        left = [-3, 0]
         self.rect.x = self.screen.width - CHARACTER_SIZE
         while self.rect.left > CHARACTER_SIZE:
             self.screen.refresh()
             self.rect = self.rect.move(left)
             self.screen.add_img(self.icon, self.rect)
             pygame.display.flip()
-            time.sleep(1 / 100000)
+            time.sleep(1 / 100)
         self.screen.refresh()
         pygame.display.flip()
 
@@ -124,12 +124,12 @@ class Icon:
         if self.direction != 'RIGHT':
             self.direction = 'RIGHT'
             self.icon = pygame.transform.flip(self.icon, True, False)
-        right = [5, 0]
+        right = [3, 0]
         while self.rect.right < width:
             self.screen.refresh()
             self.rect = self.rect.move(right)
             self.screen.add_img(self.icon, self.rect)
             pygame.display.flip()
-            time.sleep(1 / 100000)
+            time.sleep(1 / 100)
         self.screen.refresh()
         pygame.display.flip()

@@ -13,7 +13,9 @@ class Battle:
 
     def start_battle(self):
 
+        # where does screen come from!
         attackIcon = graphics.Icon('images/attack.png', screen)
+        fireballIcon = graphics.Icon('images/fireball.png', screen)
 
         while not self.game_over():
             print("What would you like to do?")
@@ -29,12 +31,16 @@ class Battle:
                 attackIcon.move_right()
             elif mage_move == 1:
                 self.mage.fireball(self.monster)
+                fireballIcon.move_right()
             elif mage_move == 2:
                 self.mage.heal(random.randint(5, 10))
             elif mage_move == 3:
                 self.mage.mana += 10
 
             time.sleep(1)
+
+            screen.update_health(self.mage.hp, self.monster.hp)
+            screen.refresh()
 
             # If monster is not dead, monster attacks mage
             if not self.monster.is_dead():
@@ -72,7 +78,7 @@ pg.init()
 screen = graphics.Screen(800, 600)
 pg.display.flip()
 
-mymage = game.Mage("Ryan", 50, 2)
+mymage = game.Mage("Ryan", 100, 2)
 randommonster = game.Monster()
 
 mybattle = Battle(mymage, randommonster)
