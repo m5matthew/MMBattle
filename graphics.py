@@ -62,8 +62,8 @@ class Screen:
         monsterBarX = screenWidth - barWidth - margin
         backgroundBarColor = (128, 128, 128)  # grey
         maxHealth = 100
-        mage_health = self.mageHealth / 2
-        monster_health = self.monsterHealth / 2
+        mage_health = self.mageHealth 
+        monster_health = self.monsterHealth 
         maxHealth = self.maxHealth
 
         # draws mage health bar
@@ -115,6 +115,8 @@ class Icon:
             self.screen.add_img(self.icon, self.rect)
             pygame.display.flip()
             time.sleep(1 / 100000)
+        self.screen.refresh()
+        pygame.display.flip()
 
     # Moves Icon from right to left
     def move_right(self):
@@ -129,3 +131,5 @@ class Icon:
             self.screen.add_img(self.icon, self.rect)
             pygame.display.flip()
             time.sleep(1 / 100000)
+        self.screen.refresh()
+        pygame.display.flip()
