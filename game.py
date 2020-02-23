@@ -47,7 +47,11 @@ class Mage(Character):
 class Monster(Character):
 
     def __init__(self, name="Monster", hp=100):
+<<<<<<< HEAD
         super().__init__(name, hp, 10)
+=======
+        super().__init__(name, hp, random.randint(1,10))
+>>>>>>> 0ce365bd8cf15ef75fe1f8c84de987672873b225
 
     def critical_hit(self, opponent):
         opponent.hp -= 2*self.power
