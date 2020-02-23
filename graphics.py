@@ -1,8 +1,7 @@
 import pygame
-import time
 
 CHARACTER_SIZE = 200
-
+ICON_SIZE = 100
 
 class Screen:
     def __init__(self, width, height):
@@ -13,6 +12,7 @@ class Screen:
         self.height = height
         self.backgroundColor = 255, 255, 255
         self.screen = pygame.display.set_mode((width, height))
+        self.currMoving= None 
 
         # init platform
         platform = pygame.image.load('images/grass.png')
@@ -87,49 +87,52 @@ class Screen:
         self.mageHealth = mage_health
         self.monsterHealth = monster_health
 
-
 class Icon:
     def __init__(self, image_name, screen):
         icon = pygame.image.load(image_name)
-        icon = pygame.transform.scale(icon, (100, 100))
+        icon = pygame.transform.scale(icon, (ICON_SIZE, ICON_SIZE))
         self.icon = icon
         self.rect = icon.get_rect()
         self.rect.y = screen.height / 2
         self.screen = screen
         self.direction = 'RIGHT'
+        self.movingLeft = True 
+    
 
-    # Moves Icon from left to right
-    def move_left(self):
-
-        # Switch directions if we need to
-        if self.direction != 'LEFT':
-            self.direction = 'LEFT'
-            self.icon = pygame.transform.flip(self.icon, True, False)
-
-        # Keep moving left until you reach left side
-        left = [-5, 0]
-        self.rect.x = self.screen.width - CHARACTER_SIZE
-        while self.rect.left > CHARACTER_SIZE:
-            self.screen.refresh()
-            self.rect = self.rect.move(left)
-            self.screen.add_img(self.icon, self.rect)
-            pygame.display.flip()
-            time.sleep(1 / 100000)
-        self.screen.refresh()
-        pygame.display.flip()
-
-    # Moves Icon from right to left
-    def move_right(self):
-        width = self.screen.width - CHARACTER_SIZE
+    def place_left(self):
         if self.direction != 'RIGHT':
             self.direction = 'RIGHT'
             self.icon = pygame.transform.flip(self.icon, True, False)
-        right = [5, 0]
-        while self.rect.right < width:
+        self.rect.x = CHARACTER_SIZE
+    
+    def place_right(self):
+        if self.direction != 'LEFT':
+            self.direction = 'LEFT'
+            self.icon = pygame.transform.flip(self.icon, True, False)
+        self.rect.x = self.screen.width - CHARACTER_SIZE - ICON_SIZE
+
+    def move(self):
+        if self.direction == 'LEFT':
+            self.move_left()
+        elif self.direction == 'RIGHT':
+            self.move_right()
+
+    # Moves icon 1 unit to left; stops moving once icon reaches right side
+    def move_left(self):
+        if self.rect.x < CHARACTER_SIZE:
+            self.screen.currMoving = None 
             self.screen.refresh()
-            self.rect = self.rect.move(right)
+        else:
+            self.screen.refresh()
+            self.rect = self.rect.move([-3,0])
             self.screen.add_img(self.icon, self.rect)
-            pygame.display.flip()
-            time.sleep(1 / 100000)
-        self.screen.refresh()
-        pygame.display.flip()
+
+    # Moves icon 1 unit to right; stops moving once icon reaches left side
+    def move_right(self):
+        if self.rect.right > self.screen.width - CHARACTER_SIZE:
+            self.screen.currMoving = None
+            self.screen.refresh()
+        else:
+            self.screen.refresh()
+            self.rect = self.rect.move([3,0])
+            self.screen.add_img(self.icon, self.rect)
